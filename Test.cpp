@@ -4,7 +4,6 @@
  * Date: 2021-03
  */
 
-
 #include "doctest.h"
 #include "snowman.hpp"
 using namespace ariel;
