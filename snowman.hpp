@@ -1,4 +1,4 @@
 #include <string>
 namespace ariel{
-    string snowman(long int number);
+    std::string snowman(long int number);
 }
