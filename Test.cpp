@@ -62,11 +62,11 @@ string parts[8][4] = {
                         {buttons, vest, inward_arms, none},
                         {buttons, feet, flat, none}};
 
-
-
 TEST_CASE("Good snowman code") {
     CHECK(snowman(11114411) == "_===_\n(.,.)\n( : )\n( : )");
-    /* Add more checks here */
+    
+
+    
 }
 
 TEST_CASE("Bad snowman code") {
@@ -79,6 +79,9 @@ TEST_CASE("Bad snowman code") {
     CHECK_THROWS(snowman(11111));
     CHECK_THROWS(snowman(111111));
     CHECK_THROWS(snowman(1111111));
+
+    // Too long of an expression
+    CHECK_THROWS(snowman(123412341234));
     
     // Input numbers not in range
     CHECK_THROWS(snowman(5));
