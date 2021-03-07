@@ -26,6 +26,8 @@
 using namespace ariel;
 using namespace std;
 
+#define CHECK_THROWS DOCTEST_CHECK_THROWS
+
 // Setting up possible hats
 string straw_hat = "_==_";
 string mexican_hat = " ___ \n.....";
@@ -64,11 +66,11 @@ string parts[8][4] = {
                         {buttons, feet, flat, none}}; // Bases
 
 
-enum bad_inputs{ too_long, too_short, too_high, too_low}
+enum bad_inputs{ too_long, too_short, too_high, too_low};
 
 int produce_long_input(){
     int c;
-    string input; = ""
+    string input = "";
     for (int i = 0; i < 10; i++){
                 c = 1 + (rand() % 4); // Generating a random digit between 1 and 4 
                 input += to_string(c);; // Converting the random digit to a char and concatinating it to the string 
@@ -78,7 +80,7 @@ int produce_long_input(){
 
 int produce_short_input(){
     int c;
-    string input; = ""
+    string input = "";
     for (int i = 0; i < 5; i++){
                 c = 1 + (rand() % 4); // Generating a random digit between 1 and 4 
                 input += to_string(c);; // Converting the random digit to a char and concatinating it to the string 
@@ -145,10 +147,23 @@ int produce_invalid_input(){
             return produce_low_input();
 
     }
+    return 0;
+}
+
+/* This method will break the returned string into snowman defined parts */ 
+string* break_snowman(const int input, string output){
+
+    string *broken = new string[8];
+    string str_input = to_string(input);
+
+
+    return broken;
 }
 
 TEST_CASE("Good snowman code") {
     CHECK(snowman(11114411) == "_===_\n(.,.)\n( : )\n( : )");
+
+
     
 }
 
@@ -185,7 +200,6 @@ TEST_CASE("Bad snowman code") {
 
     // Check for general bad input
     for(int i = 0; i < 1000; i++){
-        CHECK_THROWS(snowman(produce_invalid_input());
+        CHECK_THROWS(snowman(produce_invalid_input()));
     }
 }
-/* Add more test cases here */
