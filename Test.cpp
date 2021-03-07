@@ -21,6 +21,7 @@
 #include "doctest.h"
 #include "snowman.hpp"
 #include <string>
+#include <iostream>
 
 using namespace ariel;
 using namespace std;
@@ -53,14 +54,55 @@ string up_right = "/\n";
 string down_right = "\n\\";
 
 string parts[8][4] = {
-                        {straw_hat, mexican_hat, fez, russian_hat},
-                        {",", ".", "_", " "},
-                        {".", "o", "0", "-"},
-                        {".", "o", "0", "-"},
-                        {normal_left, up_left, down_left, none_arm},
-                        {normal_right, up_right, down_right, none_arm},
-                        {buttons, vest, inward_arms, none},
-                        {buttons, feet, flat, none}};
+                        {straw_hat, mexican_hat, fez, russian_hat}, // Hats
+                        {",", ".", "_", " "}, // Noses
+                        {".", "o", "0", "-"}, // Left eye
+                        {".", "o", "0", "-"}, // Right eye
+                        {normal_left, up_left, down_left, none_arm}, // Left arms
+                        {normal_right, up_right, down_right, none_arm}, // Right arms
+                        {buttons, vest, inward_arms, none}, // Torsos
+                        {buttons, feet, flat, none}}; // Bases
+
+
+enum bad_inputs{ too_long, too_short, too_high, too_low}
+
+/* This method will produce a random valid input for the snowman method */
+int produce_valid_input(){
+
+    int c;
+    string input = "";
+    for (int i = 0; i < 8; i++){
+        c = 1 + (rand() % 4); // Generating a random digit between 1 and 4 
+        input += to_string(c);; // Converting the random digit to a char and concatinating it to the string 
+    }
+    return stoi(input);
+
+}
+
+// 
+int produce_invalid_input(){
+    
+    int type, input; // type will be the type of invalid input
+    string str = "";// We will use that string to concatinate numbers 
+
+    switch (type){
+        case too_long:
+            for (int i = 0; i < 8; i++){
+                c = 1 + (rand() % 4); // Generating a random digit between 1 and 4 
+                input += to_string(c);; // Converting the random digit to a char and concatinating it to the string 
+            }
+            break;
+        case too_short:
+
+            break;
+        case too_high:
+
+            break;
+        case too_low:
+
+            break;
+    }
+}
 
 TEST_CASE("Good snowman code") {
     CHECK(snowman(11114411) == "_===_\n(.,.)\n( : )\n( : )");
