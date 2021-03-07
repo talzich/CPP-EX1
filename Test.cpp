@@ -66,6 +66,50 @@ string parts[8][4] = {
 
 enum bad_inputs{ too_long, too_short, too_high, too_low}
 
+int produce_long_input(){
+    int c;
+    string input; = ""
+    for (int i = 0; i < 10; i++){
+                c = 1 + (rand() % 4); // Generating a random digit between 1 and 4 
+                input += to_string(c);; // Converting the random digit to a char and concatinating it to the string 
+    }
+    return stoi(input);
+}
+
+int produce_short_input(){
+    int c;
+    string input; = ""
+    for (int i = 0; i < 5; i++){
+                c = 1 + (rand() % 4); // Generating a random digit between 1 and 4 
+                input += to_string(c);; // Converting the random digit to a char and concatinating it to the string 
+    }
+    return stoi(input);
+}
+
+int produce_high_input(){
+
+    int c;
+    string input = "";
+    for (int i = 0; i < 8; i++){
+        c = 5 + (rand() % 5); // Generating a random digit between 5 and 9 
+        input += to_string(c);; // Converting the random digit to a char and concatinating it to the string 
+    }
+    return stoi(input);
+
+}
+
+int produce_low_input(){
+
+    int c;
+    string input = "";
+    for (int i = 0; i < 8; i++){
+        c = (-1)*(rand() % 9); // Generating a random digit between 0 and -9 
+        input += to_string(c);; // Converting the random digit to a char and concatinating it to the string 
+    }
+    return stoi(input);
+
+}
+
 /* This method will produce a random valid input for the snowman method */
 int produce_valid_input(){
 
@@ -79,7 +123,11 @@ int produce_valid_input(){
 
 }
 
-// 
+/* 
+    This method will produce an invalid random invalid input for the snowman method. 
+    The input could be too long, too short or digits not in the correct range. 
+    The type of bad input is also set randomly
+*/
 int produce_invalid_input(){
     
     int type, input; // type will be the type of invalid input
@@ -87,20 +135,13 @@ int produce_invalid_input(){
 
     switch (type){
         case too_long:
-            for (int i = 0; i < 8; i++){
-                c = 1 + (rand() % 4); // Generating a random digit between 1 and 4 
-                input += to_string(c);; // Converting the random digit to a char and concatinating it to the string 
-            }
-            break;
+            return produce_long_input();
         case too_short:
-
-            break;
+            return produce_short_input();
         case too_high:
-
-            break;
+            return produce_high_input();
         case too_low:
 
-            break;
     }
 }
 
