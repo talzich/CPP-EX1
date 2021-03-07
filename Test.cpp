@@ -133,6 +133,7 @@ int produce_invalid_input(){
     int type, input; // type will be the type of invalid input
     string str = "";// We will use that string to concatinate numbers 
 
+    type = rand() % 4;
     switch (type){
         case too_long:
             return produce_long_input();
@@ -141,14 +142,13 @@ int produce_invalid_input(){
         case too_high:
             return produce_high_input();
         case too_low:
+            return produce_low_input();
 
     }
 }
 
 TEST_CASE("Good snowman code") {
     CHECK(snowman(11114411) == "_===_\n(.,.)\n( : )\n( : )");
-    
-
     
 }
 
@@ -163,15 +163,29 @@ TEST_CASE("Bad snowman code") {
     CHECK_THROWS(snowman(111111));
     CHECK_THROWS(snowman(1111111));
 
+    for(int i = 0; i < 25; i++){
+        CHECK_THROWS(snowman(produce_short_input()));
+    }
+
     // Too long of an expression
     CHECK_THROWS(snowman(123412341234));
+
+    for(int i = 0; i < 25; i++){
+        CHECK_THROWS(snowman(produce_long_input()));
+    }
     
     // Input numbers not in range
     CHECK_THROWS(snowman(5));
     CHECK_THROWS(snowman(0));
     CHECK_THROWS(snowman(-1));
+    for(int i = 0; i < 25; i++){
+        CHECK_THROWS(snowman(produce_low_input()));
+        CHECK_THROWS(snowman(produce_high_input()));
+    }
 
+    // Check for general bad input
+    for(int i = 0; i < 1000; i++){
+        CHECK_THROWS(snowman(produce_invalid_input());
+    }
 }
-
-
 /* Add more test cases here */
