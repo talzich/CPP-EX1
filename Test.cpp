@@ -29,7 +29,7 @@ using namespace std;
 #define CHECK_THROWS DOCTEST_CHECK_THROWS
 
 // Setting up possible hats
-string straw_hat = "_==_";
+string straw_hat = "_===_";
 string mexican_hat = " ___ \n.....";
 string fez = "  _  \n/_\\";
 string russian_hat = "  _  \n/_\\";
@@ -149,7 +149,16 @@ int produce_invalid_input(){
     }
     return 0;
 }
-
+/*
+                        {straw_hat, mexican_hat, fez, russian_hat}, // Hats
+                        {",", ".", "_", " "}, // Noses
+                        {".", "o", "0", "-"}, // Left eye
+                        {".", "o", "0", "-"}, // Right eye
+                        {normal_left, up_left, down_left, none_arm}, // Left arms
+                        {normal_right, up_right, down_right, none_arm}, // Right arms
+                        {buttons, vest, inward_arms, none}, // Torsos
+                        {buttons, feet, flat, none}}; // Bases
+*/
 /* This method takes the input ariel::snowman was given and produces a broken up snowman so we could
    later compare the parts to the actual output ariel::snowman provided*/ 
 
@@ -158,23 +167,55 @@ string* break_snowman(const int input){
     string *broken = new string[8];
     string str_input = to_string(input);
 
+    int j;
     for(int i = 0; i < str_input.size(); i++){
-        int j = (str_input.at(i) - '0');
-        broken[i] = parts[i][j];
+        j = (str_input.at(i) - '0');
+        broken[i] = parts[i][j-1];
     }
-
+    cout << endl;
     return broken;
-}
+} // Tested
 
 /*  This method takes the acutual output ariel::snowman produced and compares it to the broken snowman
     we produced earlier */
-int compare_snowmans(string output, string *broken){}
+bool compare_snowmans(string output, string *broken){
+
+    int index = 0; // Will keep track of the general iteration through output string
+    
+    // Constructing the actual hat for comparison
+    // The length of possible hats is not constant, so, we need to parse out a string the size of broken[0] (expected hat)
+    // and compare it to broken[0]. 
+    string actual_hat = "";
+    for(int i = 0; i <= broken[0].size(); i++){
+        actual_hat += output.at(i);
+        index++;
+
+    }
+    if(broken[0].compare(actual_hat) == 0) return false;
+
+    index++; // After hat there should be \n, we will get past that
+    
+    // Constructing actual left hand
+    string actual_x = "";
+    if(output.at(index) != '('){
+        actual_x += output.at(index++);
+    }
+    index++; // Moving past the '(' charecter
+    
+    string actual_r = "";
+    actual_r += output.at(index++);
+
+    return true;
+    
+
+}
 
 TEST_CASE("Good snowman code") {
     CHECK(snowman(11114411) == "_===_\n(.,.)\n( : )\n( : )");
+    string *broken = break_snowman(11114411);
+    compare_snowmans("_===_\n(.,.)\n( : )\n( : )", broken);
 
 
-    
 }
 
 TEST_CASE("Bad snowman code") {
