@@ -61,7 +61,7 @@ const string flat = "___";
 const string normal_left = "\n<";
 const string up_left = "\\\n";
 const string down_left = " \n/";
-const string none_arm = "\n\n";
+const string none_arm = " ";
 
 // Setting up possible right arms
 const string normal_right = "\n>";
@@ -214,29 +214,66 @@ bool compare_snowmans(string output, string *broken){
     // The length of possible hats is not constant, so, we will compare the first chars of the output to the proper hat found 
     // in broken[0]
     string actual_hat = "";
-    for(index = 0; index < broken[0].size(); index++){
-        if(broken[0].at(index) != output.at(index)) return false;
+    for(index = 0; index < broken[HAT].size(); index++){
+        if(broken[HAT].at(index) != output.at(index)) return false;
     }
     index++; // After hat there should be \n, we will get past that
 
-    // The snoman's arms spread accross two lines, one char above the other.
-    // We need to check them one char at a time 
+    // Comparing upper left arm
     if(output.at(index) != '('){
-        if(output.at(index) != broken[4].at(0)) return false;
+        if(output.at(index) != broken[LEFT_ARM].at(0)) return false;
         else 
-            cout << "Actual upper arm: " << output.at(index) << " Expected upper arm: " << broken[4].at(0) << endl;
+            cout << "Actual upper arm: " << output.at(index) << " Expected upper arm: " << broken[LEFT_ARM].at(0) << endl;
             index++;
     }
+    index++;// Getting past '('
+    
+    // Comparing the face
+    if(output.at(index++) != broken[RIGHT_EYE].at(0)) return false;
+    if(output.at(index++) != broken[NOSE].at(0)) return false;
+    if(output.at(index++) != broken[LEFT_EYE].at(0)) return false;
+    
+    index++; // After face there should be ')', getting past that.
+    
+    // Comparing upper right arm
+    if(output.at(index++) != broken[RIGHT_ARM].at(0)) return false;
+
+    // Will execute if upper right arm was not none
+    if(output.at(index) == '\n') index++;
+
+    // Comparing lower left arm
+    if(output.at(index) != '('){
+        if(output.at(index) != broken[LEFT_ARM].at(1)) return false;
+        else 
+            cout << "Actual upper arm: " << output.at(index) << " Expected upper arm: " << broken[LEFT_ARM].at(0) << endl;
+            index++;
+    }
+    index++; // Getting past '('
+
+    // Comparing torso
+    int torso_iterator = 0;
+    while(output.at(index) != ')' || torso_iterator < 3){
+        if(output.at(index++) != broken[TORSO].at(torso_iterator++)) return false;
+    }
+    if(output.at(index) != ')') return false;
     index++;
-    
-    if(output.at(index++) != broken[3].at(0)) return false;
-    if(output.at(index++) != broken[1].at(0)) return false;
-    
 
+    // Comparing lower right arm
+    if(output.at(index++) != broken[RIGHT_ARM].at(1)) return false;
 
+    // Will execute if lower right arm was not none
+    if(output.at(index) == '\n') index++;
 
+    // Getting past spaces, if there are any, and past '('
+    while(output.at(index++) != '(');
+    index++;
 
-
+    // Comparing base
+    int base_iterator = 0;
+    while(output.at(index) != ')' || torso_iterator < 3){
+        if(output.at(index++) != broken[TORSO].at(torso_iterator++)) return false;
+    }
+    if(output.at(index) != ')') return false;
     return true;
     
 
@@ -245,7 +282,7 @@ bool compare_snowmans(string output, string *broken){
 TEST_CASE("Good snowman code") {
     CHECK(snowman(11114411) == "_===_\n(.,.)\n( : )\n( : )");
     string *broken = break_snowman(11114411);
-    compare_snowmans("_===_\n(.,.)\n( : )\n( : )", broken);
+    cout << compare_snowmans("_===_\n(.,.)\n( : )\n( : )", broken) << endl;
 
 
 }
