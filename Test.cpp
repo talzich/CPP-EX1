@@ -29,31 +29,31 @@ using namespace std;
 #define CHECK_THROWS DOCTEST_CHECK_THROWS
 
 // Setting up possible hats
-string straw_hat = "_===_";
-string mexican_hat = " ___ \n.....";
-string fez = "  _  \n/_\\";
-string russian_hat = "  _  \n/_\\";
+const string straw_hat = "_===_";
+const string mexican_hat = " ___ \n.....";
+const string fez = "  _  \n/_\\";
+const string russian_hat = "  _  \n/_\\";
 
 // Setting up possible Torsos
-string buttons = " : ";
-string vest = "] [";
-string inward_arms = "> <";
-string none = "  ";
+const string buttons = " : ";
+const string vest = "] [";
+const string inward_arms = "> <";
+const string none = "  ";
 
 // Setting up possible Bases
-string feet = "" "";
-string flat = "___";
+const string feet = "" "";
+const string flat = "___";
 
 // Setting up possible left arms
-string normal_left = "\n<";
-string up_left = "\\\n";
-string down_left = "\n/";
-string none_arm = "\n\n";
+const string normal_left = "\n<";
+const string up_left = "\\\n";
+const string down_left = "\n/";
+const string none_arm = "\n\n";
 
 // Setting up possible right arms
-string normal_right = "\n>";
-string up_right = "/\n";
-string down_right = "\n\\";
+const string normal_right = "\n>";
+const string up_right = "/\n";
+const string down_right = "\n\\";
 
 string parts[8][4] = {
                         {straw_hat, mexican_hat, fez, russian_hat}, // Hats
@@ -186,20 +186,25 @@ bool compare_snowmans(string output, string *broken){
     // The length of possible hats is not constant, so, we need to parse out a string the size of broken[0] (expected hat)
     // and compare it to broken[0]. 
     string actual_hat = "";
-    for(int i = 0; i <= broken[0].size(); i++){
+    for(int i = 0; i < broken[0].size(); i++){
         actual_hat += output.at(i);
         index++;
-
     }
-    if(broken[0].compare(actual_hat) == 0) return false;
 
+    if(broken[0].compare(actual_hat) != 0) return false;
+    
+    cout << output.at(index) << endl;
     index++; // After hat there should be \n, we will get past that
     
-    // Constructing actual left hand
+    // Constructing actual left arms
     string actual_x = "";
+
+    // The snoman's arms spread accross two lines, one char above the other.
+    // We need to construct them one char at a time 
     if(output.at(index) != '('){
         actual_x += output.at(index++);
     }
+    cout << output.at(index) <<endl;
     index++; // Moving past the '(' charecter
     
     string actual_r = "";
