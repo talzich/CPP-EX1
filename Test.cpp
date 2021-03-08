@@ -27,6 +27,19 @@ using namespace ariel;
 using namespace std;
 
 #define CHECK_THROWS DOCTEST_CHECK_THROWS
+#define HAT 0
+#define NOSE 1
+#define LEFT_EYE 2
+#define RIGHT_EYE 3
+#define LEFT_ARM 4
+#define RIGHT_ARM 5
+#define TORSO 6
+#define BASE 7
+
+// ============================================
+//    SET-UP    
+//    The following part is not the actual testing, rather a set up of necessary values and methods 
+// ============================================
 
 // Setting up possible hats
 const string straw_hat = "_===_";
@@ -47,7 +60,7 @@ const string flat = "___";
 // Setting up possible left arms
 const string normal_left = "\n<";
 const string up_left = "\\\n";
-const string down_left = "\n/";
+const string down_left = " \n/";
 const string none_arm = "\n\n";
 
 // Setting up possible right arms
@@ -55,6 +68,19 @@ const string normal_right = "\n>";
 const string up_right = "/\n";
 const string down_right = "\n\\";
 
+/*
+    This matrix represents the parts of a snowman. 
+    Rows in the matrix are defined by their digit's location in the input number.
+    Columns in the matrix are defined by their string related value, based on the numeric value of the digit in the input number.
+    
+*/
+
+/*
+     This matrix contains possible snowman parts. 
+     The rows of the matrix reprasent the location of each digit in the input number.
+     The columns of the matrix reprasent the value of the digit, as defined in:
+      https://codegolf.stackexchange.com/questions/49671/do-you-want-to-code-a-snowman/49720
+*/
 string parts[8][4] = {
                         {straw_hat, mexican_hat, fez, russian_hat}, // Hats
                         {",", ".", "_", " "}, // Noses
@@ -68,6 +94,7 @@ string parts[8][4] = {
 
 enum bad_inputs{ too_long, too_short, too_high, too_low};
 
+// The next 4 methods produce bad inputs of different types
 int produce_long_input(){
     int c;
     string input = "";
@@ -149,6 +176,7 @@ int produce_invalid_input(){
     }
     return 0;
 }
+
 /*
                         {straw_hat, mexican_hat, fez, russian_hat}, // Hats
                         {",", ".", "_", " "}, // Noses
@@ -180,35 +208,34 @@ string* break_snowman(const int input){
     we produced earlier */
 bool compare_snowmans(string output, string *broken){
 
-    int index = 0; // Will keep track of the general iteration through output string
+    int index; // Will keep track of the general iteration through output string
     
     // Constructing the actual hat for comparison
-    // The length of possible hats is not constant, so, we need to parse out a string the size of broken[0] (expected hat)
-    // and compare it to broken[0]. 
+    // The length of possible hats is not constant, so, we will compare the first chars of the output to the proper hat found 
+    // in broken[0]
     string actual_hat = "";
-    for(int i = 0; i < broken[0].size(); i++){
-        actual_hat += output.at(i);
-        index++;
+    for(index = 0; index < broken[0].size(); index++){
+        if(broken[0].at(index) != output.at(index)) return false;
     }
-
-    if(broken[0].compare(actual_hat) != 0) return false;
-    
-    cout << output.at(index) << endl;
     index++; // After hat there should be \n, we will get past that
-    
-    // Constructing actual left arms
-    string actual_x = "";
 
     // The snoman's arms spread accross two lines, one char above the other.
-    // We need to construct them one char at a time 
+    // We need to check them one char at a time 
     if(output.at(index) != '('){
-        actual_x += output.at(index++);
+        if(output.at(index) != broken[4].at(0)) return false;
+        else 
+            cout << "Actual upper arm: " << output.at(index) << " Expected upper arm: " << broken[4].at(0) << endl;
+            index++;
     }
-    cout << output.at(index) <<endl;
-    index++; // Moving past the '(' charecter
+    index++;
     
-    string actual_r = "";
-    actual_r += output.at(index++);
+    if(output.at(index++) != broken[3].at(0)) return false;
+    if(output.at(index++) != broken[1].at(0)) return false;
+    
+
+
+
+
 
     return true;
     
