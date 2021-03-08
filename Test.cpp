@@ -150,15 +150,25 @@ int produce_invalid_input(){
     return 0;
 }
 
-/* This method will break the returned string into snowman defined parts */ 
-string* break_snowman(const int input, string output){
+/* This method takes the input ariel::snowman was given and produces a broken up snowman so we could
+   later compare the parts to the actual output ariel::snowman provided*/ 
 
+string* break_snowman(const int input){
+ 
     string *broken = new string[8];
     string str_input = to_string(input);
 
+    for(int i = 0; i < str_input.size(); i++){
+        int j = (str_input.at(i) - '0');
+        broken[i] = parts[i][j];
+    }
 
     return broken;
 }
+
+/*  This method takes the acutual output ariel::snowman produced and compares it to the broken snowman
+    we produced earlier */
+int compare_snowmans(string output, string *broken){}
 
 TEST_CASE("Good snowman code") {
     CHECK(snowman(11114411) == "_===_\n(.,.)\n( : )\n( : )");
