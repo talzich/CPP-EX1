@@ -97,8 +97,9 @@ enum bad_inputs{ too_long, too_short, too_high, too_low};
 // The next 4 methods produce bad inputs of different types
 int produce_long_input(){
     int c;
+    const int long_input = 10;
     string input = "";
-    for (int i = 0; i < 10; i++){
+    for (int i = 0; i < long_input; i++){
                 c = 1 + (rand() % 4); // Generating a random digit between 1 and 4 
                 input += to_string(c);; // Converting the random digit to a char and concatinating it to the string 
     }
@@ -149,6 +150,7 @@ int produce_valid_input(){
         input += to_string(c);; // Converting the random digit to a char and concatinating it to the string 
     }
     return stoi(input);
+    
 
 }
 
