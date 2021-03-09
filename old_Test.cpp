@@ -208,7 +208,7 @@ string* break_snowman(const int input){
 
 /*  This method takes the acutual output ariel::snowman produced and compares it to the broken snowman
     we produced earlier */
-bool compare_snowmans(string output, string *broken){
+bool check_snowman(string output, string *broken){
 
     int index; // Will keep track of the general iteration through output string
     
@@ -284,7 +284,7 @@ bool compare_snowmans(string output, string *broken){
 TEST_CASE("Good snowman code") {
     CHECK(snowman(11114411) == "_===_\n(.,.)\n( : )\n( : )");
     string *broken = break_snowman(11114411);
-    cout << compare_snowmans("_===_\n(.,.)\n( : )\n( : )", broken) << endl;
+    cout << check_snowman("_===_\n(.,.)\n( : )\n( : )", broken) << endl;
 
 
 }

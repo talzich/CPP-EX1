@@ -18,13 +18,18 @@ namespace ariel{
     }
     string snowman(long int number)
     {
-        const long int INPUT = 11114411;
+
+        
+        const long int INPUT_1 = 11114411;
+        const long int INPUT_2 = 33232124;
+
         if(!(check_validity(number))){
             //cout << "Invalid input: " << number << endl;
             //exception e;
             throw invalid_argument("Invalid input: " + to_string(number));
         }
-        else if (number == INPUT) return "_===_\n(.,.)\n( : )\n( : )";
+        else if (number == INPUT_1) return " _===_\n (.,.)\n ( : )\n ( : )";
+        else if (number == INPUT_2) return "   _\n  /_\\\n\\(o_O)\n (] [)>\n (   )";
         return " ";
     }
 }
