@@ -102,7 +102,7 @@ int produce_valid_input(){
 int produce_invalid_input(){
     
     int type, input; // type will be the type of invalid input
-    string str = "";// We will use that string to concatinate numbers 
+    string str = "";// We will use that string to concatenate numbers 
 
     type = rand() % 4;
     switch (type){
@@ -119,21 +119,17 @@ int produce_invalid_input(){
     return 0;
 }
 
-string* break_snowman(const int input){
- 
-    string *broken = new string[GOOD_INPUT_LENGTH];
-    string str_input = to_string(input);
+/*
+    This method takes output from ariel::snowman() and the parts corresponding
+    with input in the shape of an array named broken. 
+    The method iterates through the output, char by char, and compares to 
+    the corresponding chars in the 'broken' array, taking in to consideration 
+    the proper format of a snowman (properly placed parenthesis, '\n' and spaces)
 
-    int j;
-    for(int i = 0; i < str_input.size(); i++){
-        j = (str_input.at(i) - '0');
-        broken[i] = parts[i][j-1];
-    }
-    return broken;
-}
-
+*/
 bool check_snowman(string output, string *broken){
 
+    cout << "### Now checking the following snowman ###\n" << output << endl;
     int index; // Will iterate through the output
 
     // Length of possible hats is not constant
@@ -142,67 +138,63 @@ bool check_snowman(string output, string *broken){
     for(index = 0; index < broken[HAT].size(); index++){
         if(broken[HAT].at(index) != output.at(index)) return false;
     }
-    index++; //Getting past '\n'
+    if(output.at(index++) != '\n') return false; //Getting past '\n'
 
+    // Comparing upper left arm
     if(output.at(index++) != broken[LEFT_ARM].at(UP)) return false;
-    index++; // Getting past '('
 
     // Comparing the face
     int first_char = 0;
-    if(output.at(index++) != broken[RIGHT_EYE].at(first_char)) return false;
-    if(output.at(index++) != broken[NOSE].at(first_char)) return false;
+    if(output.at(index++) != '(') return false;
     if(output.at(index++) != broken[LEFT_EYE].at(first_char)) return false;
-    index++; // Getting past ')'
+    if(output.at(index++) != broken[NOSE].at(first_char)) return false;
+    if(output.at(index++) != broken[RIGHT_EYE].at(first_char)) return false;
+    if(output.at(index++) != ')') return false; // Getting past ')'
 
     // Comparing upper right arm
     if(output.at(index++) != broken[RIGHT_ARM].at(UP)) return false;
+    if(output.at(index++) != '\n') return false; //Getting past '\n'
 
-    // Will execute if upper right arm was not none
-    if(output.at(index) == '\n') index++;
-
+    // Comparing lower left arm
     if(output.at(index++) != broken[LEFT_ARM].at(DOWN)) return false;
-    index++; // Getting past '('
 
+    // Comparing torso
     int torso_iter = 0;
-    while(output.at(index) != ')' || torso_iter < 3){
+    if(output.at(index++) != '(') return false; //Getting past '('
+    while(torso_iter < 3){
         if(output.at(index++) != broken[TORSO].at(torso_iter++)) return false;
     }
-    // If torso was more than 3 characters
-    if(output.at(index) != ')') return false;
-    else index++;// Getting past ')'
+    if(output.at(index++) != ')') return false; //Getting past ')'
 
     // Comparing lower right arm
-    if(output.at(index++) != broken[RIGHT_ARM].at(1)) return false;
-
-    // Will execute if lower right arm was not none
-    if(output.at(index) == '\n') index++;
-
-    index += 2; // Getting past a space and a ')'
+    if(output.at(index++) != broken[RIGHT_ARM].at(DOWN)) return false;
+    if(output.at(index++) != '\n') return false; //Getting past '\n'
+    if(output.at(index++) != WS.at(first_char)) return false; //Getting past one white space preceding to base
 
     // Comparing base
     int base_iterator = 0;
-    while(output.at(index) != ')' || base_iterator < 3){
+    if(output.at(index++) != '(') return false; //Getting past '('
+    while(base_iterator < 3){
         if(output.at(index++) != broken[BASE].at(base_iterator++)) return false;
     }
-    if(output.at(index) != ')') return false;
+    if(output.at(index++) != ')') return false; //Getting past ')'
+    
+    cout << "### Passed comparison ###\n" << endl;
     return true;
 }
 
 TEST_CASE("Good snowman code") {
-    CHECK(snowman(11114411) == " _===_\n (.,.)\n ( : )\n ( : )");
-    string *broken = break_snowman(11114411);
-    if(check_snowman(" _===_\n (.,.)\n ( : )\n ( : )", broken))
-        cout << "True"<< endl;
+    
+    string *broken = fetch_parts(11114411);
+    CHECK(check_snowman(snowman(11114411), broken));
 
-    CHECK(snowman(33232124) == "   _\n  /_\\\n\\(o_O)\n (] [)>\n (   )");
-    broken = break_snowman(33232124);
-    if(check_snowman("   _\n  /_\\\n\\(o_O)\n (] [)>\n (   )", broken))
-        cout << "True"<< endl;
-
+    broken = fetch_parts(33232124);
+    CHECK(check_snowman(snowman(33232124), broken));
+    
     int input;
     for(int i = 0; i < NUM_OF_TESTS; i++){
         input = produce_valid_input();
-        broken = break_snowman(input);
+        broken = fetch_parts(input);
         CHECK(check_snowman(snowman(input), broken));
     }
 }

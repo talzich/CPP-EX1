@@ -62,4 +62,6 @@ const string parts[INPUT_LENGTH][NUM_OF_TYPES] = {
 namespace ariel
 {
     string snowman(long int number);
+    int get_index(char digit);
+    string *fetch_parts(const long int input);
 }
