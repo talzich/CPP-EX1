@@ -144,22 +144,23 @@ bool check_snowman(string output, string *broken){
     }
     index++; //Getting past '\n'
 
-    if(output.at(index++) != broken[LEFT_ARM].at(0)) return false;
+    if(output.at(index++) != broken[LEFT_ARM].at(UP)) return false;
     index++; // Getting past '('
 
     // Comparing the face
-    if(output.at(index++) != broken[RIGHT_EYE].at(0)) return false;
-    if(output.at(index++) != broken[NOSE].at(0)) return false;
-    if(output.at(index++) != broken[LEFT_EYE].at(0)) return false;
+    int first_char = 0;
+    if(output.at(index++) != broken[RIGHT_EYE].at(first_char)) return false;
+    if(output.at(index++) != broken[NOSE].at(first_char)) return false;
+    if(output.at(index++) != broken[LEFT_EYE].at(first_char)) return false;
     index++; // Getting past ')'
 
     // Comparing upper right arm
-    if(output.at(index++) != broken[RIGHT_ARM].at(0)) return false;
+    if(output.at(index++) != broken[RIGHT_ARM].at(UP)) return false;
 
     // Will execute if upper right arm was not none
     if(output.at(index) == '\n') index++;
 
-    if(output.at(index++) != broken[LEFT_ARM].at(1)) return false;
+    if(output.at(index++) != broken[LEFT_ARM].at(DOWN)) return false;
     index++; // Getting past '('
 
     int torso_iter = 0;

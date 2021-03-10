@@ -5,7 +5,9 @@ using namespace std;
 
 int main(void){
 
-	string str = "  ___\n .....";
-	cout << str << endl;
+	string test = "";
+	string tester = "1";
+	test += tester + '\n';
+	cout << test;
 	return 0;
 }
